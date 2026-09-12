@@ -1,7 +1,6 @@
 package com.sundeep1501.weather.data
 
 import com.sundeep1501.weather.data.models.City
-import com.sundeep1501.weather.data.models.WeatherResponse
 import com.sundeep1501.weather.data.retrofit.OpenWeatherApi
 import com.sundeep1501.weather.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,12 +9,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WeatherRepository @Inject constructor(
-    private val openWeatherApi: OpenWeatherApi,
+class CityRepository @Inject constructor(
+    private val weatherApi: OpenWeatherApi,
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
-    suspend fun getWeather(lat: Double, lon: Double): WeatherResponse = withContext(dispatcher) {
-        return@withContext openWeatherApi.getWeather(lat, lon)
+    suspend fun getCities(query: String): List<City> = withContext(dispatcher) {
+        return@withContext weatherApi.getCitiesByName(query)
     }
 
 }

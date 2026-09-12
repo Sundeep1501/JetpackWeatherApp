@@ -2,7 +2,7 @@ package com.sundeep1501.weather.ui.screens.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sundeep1501.weather.data.WeatherRepository
+import com.sundeep1501.weather.data.CityRepository
 import com.sundeep1501.weather.data.models.City
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
@@ -20,7 +20,7 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val weatherRepository: WeatherRepository) :
+class SearchViewModel @Inject constructor(private val cityRepository: CityRepository) :
     ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
@@ -40,7 +40,7 @@ class SearchViewModel @Inject constructor(private val weatherRepository: Weather
 
                     emit(SearchUiState.Loading)
                     try {
-                        emit(SearchUiState.Success(weatherRepository.getCities(query)))
+                        emit(SearchUiState.Success(cityRepository.getCities(query)))
                     } catch (ex: Exception) {
                         if (ex is CancellationException) throw ex
                         emit(SearchUiState.Error("Error:${ex.message ?: "Unknown Error"}"))
