@@ -1,5 +1,6 @@
 package com.sundeep1501.weather.di
 
+import com.sundeep1501.weather.BuildConfig
 import com.sundeep1501.weather.data.retrofit.CommonQueryParamsInterceptor
 import com.sundeep1501.weather.data.retrofit.OpenWeatherApi
 import dagger.Module
@@ -34,7 +35,7 @@ object NetworkModule {
     @Singleton
     @CommonQueryParams
     fun providesCommonQueryParams(): Map<String, String> {
-        return mapOf(OpenWeatherApi.QUERY_PARAM_APP_ID to OpenWeatherApi.API_KEY)
+        return mapOf(OpenWeatherApi.QUERY_PARAM_APP_ID to BuildConfig.WEATHER_API_KEY)
     }
 
     @Provides

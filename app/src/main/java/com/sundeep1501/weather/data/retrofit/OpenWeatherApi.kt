@@ -20,7 +20,6 @@ interface OpenWeatherApi {
 
     companion object {
         const val BASE_URL = "https://api.openweathermap.org"
-        const val API_KEY = "36730f42f06a908a78512181d794ccb7"
         const val QUERY_PARAM_APP_ID = "appid"
     }
 }
