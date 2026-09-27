@@ -13,16 +13,15 @@ import javax.inject.Singleton
 class CityRepository @Inject constructor(
     private val weatherApi: OpenWeatherApi,
     private val dataStoreManager: DataStoreManager,
-    @IODispatcher private val dispatcher: CoroutineDispatcher
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend fun getCities(query: String): List<City> = withContext(dispatcher) {
-        return@withContext weatherApi.getCitiesByName(query)
+    suspend fun getCities(query: String): List<City> = withContext(ioDispatcher) {
+        weatherApi.getCitiesByName(query)
     }
 
-    suspend fun getLastCity(): City? = withContext(dispatcher) { dataStoreManager.getLastCity() }
+    suspend fun getLastCity(): City? = withContext(ioDispatcher) { dataStoreManager.getLastCity() }
 
-    suspend fun saveLastCity(city: City) = withContext(dispatcher) {
+    suspend fun saveLastCity(city: City) = withContext(ioDispatcher) {
         dataStoreManager.saveLastCity(city)
     }
-
 }
