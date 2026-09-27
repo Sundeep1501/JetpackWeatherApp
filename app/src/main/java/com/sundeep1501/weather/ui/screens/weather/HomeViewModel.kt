@@ -7,15 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.sundeep1501.weather.data.CityRepository
 import com.sundeep1501.weather.data.WeatherRepository
-import com.sundeep1501.weather.data.local.DataStoreManager
 import com.sundeep1501.weather.data.models.City
 import com.sundeep1501.weather.data.models.WeatherResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -23,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
-    private val dataStoreManager: DataStoreManager,
+    private val cityRepository: CityRepository,
     private val fusedLocationProviderClient: FusedLocationProviderClient
 ) :
     ViewModel() {
@@ -40,7 +39,7 @@ class HomeViewModel @Inject constructor(
 
     private fun loadLastLocation() {
         viewModelScope.launch {
-            val lastCity = dataStoreManager.getLastCity().first()
+            val lastCity = cityRepository.getLastCity()
             citySelected(lastCity ?: DEFAULT_CITY)
         }
     }
@@ -68,7 +67,10 @@ class HomeViewModel @Inject constructor(
                     loadLastLocation()
                 }
             } catch (e: Exception) {
-                Log.e(HomeViewModel::class.java.name, "fetchCurrentLocationWeather, Exception: ${e.message}")
+                Log.e(
+                    HomeViewModel::class.java.name,
+                    "fetchCurrentLocationWeather, Exception: ${e.message}"
+                )
                 loadLastLocation()
             }
         }
@@ -125,7 +127,7 @@ class HomeViewModel @Inject constructor(
 
     private fun saveCity(city: City) {
         viewModelScope.launch {
-            dataStoreManager.saveLastCity(city)
+            cityRepository.saveLastCity(city)
         }
     }
 

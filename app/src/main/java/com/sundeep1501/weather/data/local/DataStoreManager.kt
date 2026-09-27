@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.sundeep1501.weather.data.models.City
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -28,7 +28,7 @@ class DataStoreManager @Inject constructor(
         }
     }
 
-    fun getLastCity(): Flow<City?> {
+    suspend fun getLastCity(): City? {
         return context.dataStore.data.map { preferences ->
             preferences[lastCityKey]?.let { jsonString ->
                 try {
@@ -37,6 +37,6 @@ class DataStoreManager @Inject constructor(
                     null
                 }
             }
-        }
+        }.firstOrNull()
     }
 }

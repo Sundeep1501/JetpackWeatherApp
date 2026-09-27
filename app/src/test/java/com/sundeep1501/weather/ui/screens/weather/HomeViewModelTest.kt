@@ -3,7 +3,6 @@ package com.sundeep1501.weather.ui.screens.weather
 import android.location.Location
 import app.cash.turbine.test
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.Task
 import com.google.common.truth.Truth.assertThat
 import com.sundeep1501.weather.data.WeatherRepository
@@ -37,7 +36,7 @@ class HomeViewModelTest {
     @Before
     fun setUp() {
         every { dataStoreManager.getLastCity() } returns flowOf(null)
-        viewModel = HomeViewModel(repository, dataStoreManager, fusedLocationClient)
+        viewModel = HomeViewModel(repository, dataStoreManager)
     }
 
     @Test
@@ -50,7 +49,7 @@ class HomeViewModelTest {
         every { dataStoreManager.getLastCity() } returns flowOf(lastCity)
         coEvery { repository.getWeather(lastCity.lat, lastCity.lon) } returns weatherResponse
 
-        val vm = HomeViewModel(repository, dataStoreManager, fusedLocationClient)
+        val vm = HomeViewModel(repository, dataStoreManager)
 
         // HomeViewModel updates the city with name/country from weather response
         assertThat(vm.selectedCity.value.name).isEqualTo("London")

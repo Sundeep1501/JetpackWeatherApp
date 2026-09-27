@@ -1,5 +1,6 @@
 package com.sundeep1501.weather.data
 
+import com.sundeep1501.weather.data.local.DataStoreManager
 import com.sundeep1501.weather.data.models.City
 import com.sundeep1501.weather.data.retrofit.OpenWeatherApi
 import com.sundeep1501.weather.di.IODispatcher
@@ -11,10 +12,17 @@ import javax.inject.Singleton
 @Singleton
 class CityRepository @Inject constructor(
     private val weatherApi: OpenWeatherApi,
+    private val dataStoreManager: DataStoreManager,
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
     suspend fun getCities(query: String): List<City> = withContext(dispatcher) {
         return@withContext weatherApi.getCitiesByName(query)
+    }
+
+    suspend fun getLastCity(): City? = withContext(dispatcher) { dataStoreManager.getLastCity() }
+
+    suspend fun saveLastCity(city: City) = withContext(dispatcher) {
+        dataStoreManager.saveLastCity(city)
     }
 
 }
