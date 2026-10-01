@@ -1,10 +1,12 @@
 package com.sundeep1501.weather.ui.screens.weather
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -82,15 +84,18 @@ fun HomeScreen(
                         .padding(top = 16.dp)
                 )
                 Row(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .align(Alignment.CenterHorizontally)
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    AsyncImage(model = weatherUiModel.iconUrl, contentDescription = "")
+                    AsyncImage(
+                        modifier = Modifier.size(24.dp),
+                        model = weatherUiModel.iconUrl,
+                        contentDescription = ""
+                    )
                     Text(
                         text = weatherUiModel.description,
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.align(Alignment.CenterVertically)
                     )
                 }
                 WeatherRow("Feels Like", weatherUiModel.feelsLike)
